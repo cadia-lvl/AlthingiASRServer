@@ -1,0 +1,86 @@
+1)
+Install the php5 and apache2 packages
+
+Make sure you have the following files:
+1. include/* system specific variables and error list
+7. api/newWords.php (output is JSON unless there is an error)
+    GET [speechID=rad and timestamp with a T] 
+8. api/confirmWords.php (POST endpoint)
+9. test/test_scripts/ folder for all the API test scripts
+
+Modify include/config.php for your environment specific settings.
+
+NOTE: if want to go name/ to name.php will need to disable MultiViews in the apache userdir.conf 
+
+2) 
+Install the necessary packages which also configure php to work with apache2
+sudo apt-get install -yqq curl apache2 php libapache2-mod-php php-mcrypt php-mysql
+sudo apt-get install -yqq php-curl php-xsl php-xml
+sudo service apache2 restart
+
+sudo a2enmod userdir #this makes it so you don't need to move it to apaches home directory
+sudo service apache2 restart
+
+2.5) Need to enable default locale in /etc/apache2 which should be en_US.UTF-8.
+so uncomment the following line:
+# . /etc/default/locale
+
+NOTE: Theoretically is_IS.UTF-8 should work if that locale is set.
+
+
+3a) sudo create /etc/apache2/conf-available/php-in-homedirs.conf
+
+    <IfModule mod_userdir.c>
+        <Directory /home/$USERNAME/public_html>
+            php_admin_value engine On
+        </Directory>
+    </IfModule>
+
+    sudo a2enconf php-in-homedirs
+    sudo service apache2 reload
+
+    Alternative start:
+        sudo a2enmod userdir
+        sudo service apache2 reload
+    Alternative end
+
+    Specify a log directory for error.log and access.log, set the correct permissions (rwx)
+
+3) 
+All files will be using utf-8 encoding. 
+
+So, with sudo priviledges, do the following:
+
+sudo nano /etc/apache2/sites-available/000-default.conf
+
+below DocumentRoot add, 
+
+Alias /Lirfa /var/www/Lirfa
+
+Then save the file.
+
+sudo service apache2 restart
+
+sudo mv althingiuimmockup /var/www/Lirfa
+
+make the files in 1) executable (by php www-data)
+
+4) Create the log directory and files with full permissions for user www-data
+
+e.g. error.log
+
+5) Modify the variables in the setup folder to 
+reflect the directories in include/config.php. Create two user crontab entries.
+(Enter the crontab with default editor via crontab -e)
+
+55 23 * * 1-5 PATH/TO/THIS/PROJECT/FOLDER/setup/save_confirmed_words.sh
+
+6) run all the files in db
+
+7) test the API scripts
+from the main directory run a php server using:
+php -S localhost:8000
+Then from the root directory run ./test/test_scripts/test_suite.sh
+
+It will run all the test scripts and output to stdout unless you tell it to output to a file. Then check the output for errors in the wrong places. Finally, do ctrl+c to cancel the server.
+

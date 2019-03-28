@@ -1,0 +1,16 @@
+<html><head>
+<meta charset="UTF-8">
+</head><body>
+<script type="text/javascript" charset="UTF-8">
+var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+xmlhttp.open("POST", "../../api/confirmWords/");
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+var data = 
+{"word": [{"originalWord": "efnahagsgreiningum", "delete":"true"},
+            { "originalWord":"analytica","confirmedWord": "Analytica", "pronunciation":"aː n a l ɪː t ɪ k"}]};
+var json = JSON.stringify(data, ['word', 'originalWord','confirmedWord', 'pronunciation', 'delete']);
+console.log(json);
+xmlhttp.send(json);
+</script>
+</body>
+</html>
