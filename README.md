@@ -32,24 +32,36 @@ Technical Details:
 
 Syntax:
 
-URL: api/newWords.php
+## URL: api/newWords.php
+
 GET parameters: startDate, endDate
+
 FORMAT: YYYY-MM-DD 
+
 DESCRIPTION: the day from which to start gathering words 
              AND 
             the day from which to stop gathering words
 i.e.: 2019-12-21
+
 REQUIRED: Optional
+
 RESP. for valid params: JSON of the new words, phonetic transcription, 
                         and times it appears in context
+
 RESP. for invalid params: Error messages
 e.g.: newWords/?startDate=2019-01-20&endDate=2019-01-30
 
-URL: api/confirmWords.php
-POST: {word: [{originalWord: "", confirmedWord: "", pronunciation: ""},
+## URL: api/confirmWords.php
+
+POST: 
+```
+{word: [{originalWord: "", confirmedWord: "", pronunciation: ""},
                    {originalWord: "", delete: "true" }
                   ]}
+```
+
 POST keys: word, originalWord, delete, confirmedWord, prounciation
+
 DESCRIPTION: JSON where the main object contains the key: word, which consists of an array of objects. 
       The objects need to have the following
       keys and corresponding values: originalWord & delete 
@@ -60,28 +72,43 @@ e.g.: {"word": [
                 { "originalWord":"analytica","confirmedWord": "Analytical", "pronunciation":"aː n a l ɪː t ɪ     k"}
                ]
       }
+
 REQUIRED: optional
+
 RESP. for params: HTTP STATUS codes
 
 URL: api/confirmWords.php
+
 GET parameter: startDate
 i.e.: 2019-03-06
+
 REQUIRED: Yes 
+
 DESCRIPTION: the year month and day of when the earlist desired word was confirmed
+
 GET parameter: endDate
 i.e.: 2019-03-07
+
 REQUIRED: No
+
 DESCRIPTION: the year month and day of when the last word was confirmed
+
 GET parameter: pronunciation
 i.e.: 1
+
 REQUIRED: No
+
 DESCRIPTION: flag to indicate that the pronunciation should be retrieved too
+
 RESP.: TSV format of confirmed words OR nothing if there are no words
 
 GET parameter: json
 i.e.: 1
+
 REQUIRED: No
+
 DESCRIPTION: flag to indicate that the return format should be JSON
+
 RESP.: JSON format of what the user requested OR nothing if there are no words
 
 Logs are in their default php, mysql, and apache directory.
