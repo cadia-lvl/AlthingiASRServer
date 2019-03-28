@@ -32,37 +32,41 @@ Technical Details:
 
 Syntax:
 
-## URL: api/newWords.php
+#### 1. retrieve new words by dates
 
-GET parameters: startDate, endDate
+**URL:** api/newWords.php
 
-FORMAT: YYYY-MM-DD 
+**GET parameters:** startDate, endDate
 
-DESCRIPTION: the day from which to start gathering words 
+**FORMAT:** YYYY-MM-DD 
+
+**DESCRIPTION:** the day from which to start gathering words 
              AND 
             the day from which to stop gathering words
 i.e.: 2019-12-21
 
-REQUIRED: Optional
+**REQUIRED:** Optional
 
-RESP. for valid params: JSON of the new words, phonetic transcription, 
+**RESP. for valid params:** JSON of the new words, phonetic transcription, 
                         and times it appears in context
 
-RESP. for invalid params: Error messages
+**RESP. for invalid params:** Error messages
 e.g.: newWords/?startDate=2019-01-20&endDate=2019-01-30
 
-## URL: api/confirmWords.php
+#### 2. send confirmed/deleted words
 
-POST: 
+**URL:** api/confirmWords.php
+
+**POST:** 
 ```
 {word: [{originalWord: "", confirmedWord: "", pronunciation: ""},
                    {originalWord: "", delete: "true" }
                   ]}
 ```
 
-POST keys: word, originalWord, delete, confirmedWord, prounciation
+**POST keys:** word, originalWord, delete, confirmedWord, prounciation
 
-DESCRIPTION: JSON where the main object contains the key: word, which consists of an array of objects. 
+**DESCRIPTION:** JSON where the main object contains the key: word, which consists of an array of objects. 
       The objects need to have the following
       keys and corresponding values: originalWord & delete 
       OR 
@@ -73,43 +77,45 @@ e.g.: {"word": [
                ]
       }
 
-REQUIRED: optional
+**REQUIRED:** optional
 
-RESP. for params: HTTP STATUS codes
+**RESP. for params:** HTTP STATUS codes
 
-URL: api/confirmWords.php
+#### 3. get list of confirmed words (with pronunciation and/or JSON format)
 
-GET parameter: startDate
+**URL:** api/confirmWords.php
+
+**GET parameter:** startDate
 i.e.: 2019-03-06
 
-REQUIRED: Yes 
+**REQUIRED:** Yes 
 
-DESCRIPTION: the year month and day of when the earlist desired word was confirmed
+**DESCRIPTION:** the year month and day of when the earlist desired word was confirmed
 
-GET parameter: endDate
+**GET parameter:** endDate
 i.e.: 2019-03-07
 
-REQUIRED: No
+**REQUIRED:** No
 
-DESCRIPTION: the year month and day of when the last word was confirmed
+**DESCRIPTION:** the year month and day of when the last word was confirmed
 
-GET parameter: pronunciation
+**GET parameter:** pronunciation
 i.e.: 1
 
-REQUIRED: No
+**REQUIRED:** No
 
-DESCRIPTION: flag to indicate that the pronunciation should be retrieved too
+**DESCRIPTION:** flag to indicate that the pronunciation should be retrieved too
 
-RESP.: TSV format of confirmed words OR nothing if there are no words
+**RESP.:** TSV format of confirmed words OR nothing if there are no words
 
-GET parameter: json
+**GET parameter:** json
 i.e.: 1
 
-REQUIRED: No
+**REQUIRED:** No
 
-DESCRIPTION: flag to indicate that the return format should be JSON
+**DESCRIPTION:** flag to indicate that the return format should be JSON
 
-RESP.: JSON format of what the user requested OR nothing if there are no words
+**RESP.:** JSON format of what the user requested OR nothing if there are no words
 
 Logs are in their default php, mysql, and apache directory.
 
