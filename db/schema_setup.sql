@@ -26,50 +26,65 @@ File author/s:
  * -------------------------------------------------------- */
 
 drop database if exists althingi_words;
-create database althingi_words character set utf8mb4 collate utf8mb4_unicode_ci;
+create database althingi_words character set utf8mb4 collate utf8mb4_bin;
 use althingi_words; -- set as default (current)
 
-set collation_connection = 'utf8mb4_unicode_ci';
+set collation_connection = 'utf8mb4_bin';
 
 start transaction;
 
-alter database althingi_words character set utf8mb4 collate utf8mb4_unicode_ci;
+alter database althingi_words character set utf8mb4 collate utf8mb4_bin;
 
+-- create primary key constraints as two parameters
 create table words (
-    new_word varchar(70) not null primary key,
+    word varchar(90) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+    transliteration varchar(300),
     confirmed_word varchar(300),
-    pronunciation text not null,
+    pronunciation varchar(160) not null,
     reject boolean not null DEFAULT 0,
+    discouraged boolean not null DEFAULT 0,
+    lang char(2) not null DEFAULT 'is',
+    original boolean not null DEFAULT 0,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    confirmation_date TIMESTAMP 
+    confirmation_date TIMESTAMP,
+    word_stem varchar(90),
+    primary key(word, pronunciation)
 );
-alter table words convert to character set utf8mb4 collate utf8mb4_unicode_ci;
+alter table words convert to character set utf8mb4 collate utf8mb4_bin;
 
 create table speeches (
     id varchar(18) not null primary key,
     speaker_abbreviation varchar(10) not null,
+    speech_type char(3) not null,
     creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    end_timestamp TIMESTAMP NOT NULL,
+    transcription_time_seconds integer,
+    audio_length_seconds integer,
+    resubmit boolean not null DEFAULT 0,
+    WER decimal(8,2),
+    more_resources boolean not null DEFAULT 0, --means this speech needed more resources for some reason
     thing_id int not null
 );
-alter table speeches convert to character set utf8mb4 collate utf8mb4_unicode_ci;
+alter table speeches convert to character set utf8mb4 collate utf8mb4_bin;
 
 create table contexts (
     id int not null auto_increment primary key,
     speech_id varchar(18) not null,
-    new_word varchar(70) not null,
+    word varchar(90) not null,
     context varchar(300) not null,
+    unique index (speech_id, word),
     foreign key (speech_id) references speeches(id),
-    foreign key (new_word) references words(new_word)
+    foreign key (word) references words(word)
 );
-alter table contexts convert to character set utf8mb4 collate utf8mb4_unicode_ci;
+alter table contexts convert to character set utf8mb4 collate utf8mb4_bin;
 
 create table speaker (
     id int not null auto_increment primary key,
     full_name varchar(255) not null, 
-    speech)id varchar(18) not null, 
+    speech_id varchar(18) not null, 
     speaker_abbreviation varchar(10) not null, -- just like a username
     foreign key (speech_id) references speeches(id)
 );
-alter table speaker convert to character set utf8mb4 collate utf8mb4_unicode_ci;
+alter table speaker convert to character set utf8mb4 collate utf8mb4_bin;
 
 commit;
