@@ -37,13 +37,17 @@ Syntax:
 
 **URL:** api/newWords.php
 
-**GET parameters:** startDate, endDate, and stem
+**GET parameters:** startDate, endDate
 
 **FORMAT:** YYYY-MM-DD 
+
+**GET parameter:** stem
 
 **DESCRIPTION:** the day from which to start gathering words 
              AND 
             the day from which to stop gathering words
+		AND 
+		to indicate want the stem form
 i.e.: 2019-12-21
 
 **REQUIRED:** Optional
@@ -51,7 +55,59 @@ i.e.: 2019-12-21
 **RESP. for valid params:** JSON of the stems and occurences
 
 **RESP. for invalid params:** Error messages
-e.g.: newWords/?startDate=2019-01-20&endDate=2019-01-30
+e.g.: newWords/?stem&startDate=2019-01-20&endDate=2019-01-30
+
+**URL:** api/newWords.php
+
+**GET parameters:** speechID
+
+**FORMAT:** radYYYYMMDDThh:mm:ss
+
+**GET parameter:** stem
+
+**DESCRIPTION:** the speechID where these words appeared
+		AND 
+		to indicate want the stem form
+i.e.: rad20191221T120112
+
+**REQUIRED:** Optional
+
+**RESP. for valid params:** JSON of the stems and occurences
+
+**RESP. for invalid params:** Error messages
+e.g.: newWords/?stem&speechID=rad20191221T120112
+
+**URL:** api/newWords.php
+
+**GET parameters:** top
+
+**FORMAT:** #
+
+**GET parameter:** stem
+
+**DESCRIPTION:** the top X stems
+		AND 
+		to indicate want the stem form
+i.e.: 50
+
+**REQUIRED:** Optional
+
+**RESP. for valid params:** JSON of the stems and occurences
+
+```
+[
+{"stem":"\u00f3vissusvigr\u00fam","occurences":42},
+{"stem":"kj\u00f6tm\u00e1l","occurences":34},
+{"stem":"samfylkingarflokk","occurences":32},
+{"stem":"l\u00edfskjarasamning","occurences":31},
+{"stem":"mi\u00f0flokksf\u00f3lk","occurences":30},
+{"stem":"orkupakkam\u00e1l","occurences":28},
+{"stem":"stj\u00f3rnskipunarv_nd","occurences":27},
+{"stem":"stj\u00f3rnarskr\u00e1rleg","occurences":26}
+]
+```
+
+e.g.: newWords/?stem&top=50
 
 #### 2. send confirmed/deleted words
 
