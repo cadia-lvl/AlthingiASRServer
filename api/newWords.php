@@ -40,8 +40,6 @@ header('Access-Control-Allow-Headers: content-type, X-Requested-With');
 
 include('../include/config.php');
 include_once('../include/errors.php');
-include_once('../include/utils.php');
-//functions are in the utils file
 
 //Make sure the message is parsed properly
 
@@ -183,5 +181,6 @@ else
 {
   trigger_error($lirfa_errors[800]);
   echo $lirfa_errors[800];
+  http_response_code(400);
 }
 ?>
