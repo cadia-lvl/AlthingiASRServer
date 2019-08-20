@@ -22,7 +22,7 @@ if ($prodhostname == gethostname()) //production server
 }
 else //presume dev server
 {
-    ini_set('display_errors', ON); 
+    ini_set('display_errors', 'ON'); 
 }
 ini_set('log_errors', 'TRUE'); // Error logging
 ini_set('error_log', $loggingfile); // Logging file
