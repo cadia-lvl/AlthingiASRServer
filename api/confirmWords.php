@@ -64,12 +64,12 @@ function validDate($date, $format = 'Y-m-d')
             //verify startDate is a valid date
             if( validDate($_GET['startDate'])) {
                 $startDate = htmlspecialchars($_GET['startDate']);
-                $wordsQuery =   "SELECT confirmedWord ";
+                $wordsQuery =   "SELECT confirmed_word ";
                 if (isset($_GET['pronunciation'])) {
                     $wordsQuery .= " , pronunciation ";
                 }
                 $wordsQuery .= " FROM words 
-                                WHERE confirmedWord IS NOT NULL 
+                                WHERE confirmed_word IS NOT NULL 
                                 AND confirmation_date>='$startDate' ";
                 if (isset($_GET['endDate']) && validDate($_GET['endDate'])) {
                     $endDate = htmlspecialchars($_GET['endDate']);
@@ -125,13 +125,13 @@ function validDate($date, $format = 'Y-m-d')
                                     SET reject=1,
                                         confirmation_date=NOW() 
                                     WHERE reject=0 
-                                    AND confirmedWord IS NULL 
-                                    AND newWord='$newWord'";
+                                    AND confirmed_word IS NULL 
+                                    AND word='$newWord'";
                     if (mysqli_query($con, $wordsQuery)) {
                         $dbUpdates += 1;
                     }
-                } elseif (isset($word['pronunciation']) && isset($word["confirmedWord"]) 
-                  && htmlspecialchars($word["confirmedWord"]) !== '') {
+                } elseif (isset($word['pronunciation']) && isset($word['confirmedWord']) 
+                  && htmlspecialchars($word['confirmedWord']) !== '') {
                     $confirmedWord = htmlspecialchars($word['confirmedWord']);
                     $pronunciation = htmlspecialchars($word['pronunciation']);
                     //check that the pronunciation is space delimited
@@ -153,12 +153,12 @@ function validDate($date, $format = 'Y-m-d')
                         //Check if the newWord exists in the database and has not
                         //been updated
                         $wordsQuery =  "UPDATE `words` 
-                                        SET confirmedWord='$confirmedWord',
+                                        SET confirmed_word='$confirmedWord',
                                             confirmation_date=NOW(), 
                                             pronunciation='$pronunciation' 
-                                        WHERE confirmedWord IS NULL 
+                                        WHERE confirmed_word IS NULL 
                                         AND reject=0 
-                                        AND newWord='$newWord'";
+                                        AND word='$newWord'";
                         //add it to the database;
                         if (mysqli_query($con, $wordsQuery)) {
                             $dbUpdates += 1;
